@@ -10,11 +10,12 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode
 @Entity
 @Table(name = "users")
 public class User {
@@ -25,7 +26,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
-    @EqualsAndHashCode.Include // escolhe apenas o id para comparação de igualdade
     private Long id;
 
     @Column(name = "username", length = 100, nullable = false, unique = true)
@@ -41,6 +41,9 @@ public class User {
     @Size(groups = {createUser.class, updateUser.class}, min = 8, max = 255)
     private String password;
 
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks = new ArrayList<Task>();
+
 
     public User(){}
     public User(Long id, String username, String password) {
@@ -49,6 +52,5 @@ public class User {
         this.password = password;
     }
 
-    /// private List<Task> tasks = new ArrayList<Task>();
 
 }
