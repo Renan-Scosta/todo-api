@@ -1,13 +1,16 @@
 package com.RenanSCosta.todosimple.services;
 
 
+import com.RenanSCosta.todosimple.models.Task;
 import com.RenanSCosta.todosimple.models.User;
 
+import com.RenanSCosta.todosimple.repositories.TaskRepository;
 import com.RenanSCosta.todosimple.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,11 +20,14 @@ public class UserService {
     private UserRepository userRepository;
 
 
-
     public User findById(Long id) {
         Optional<User> user = this.userRepository.findById(id);
         return user.orElseThrow(() -> new RuntimeException("User not found with id: " + id + " Type: " + User.class.getName()));
     }
+
+
+
+
 
     @Transactional
     public User create(User obj) {
