@@ -2,6 +2,7 @@ package com.RenanSCosta.todosimple.controllers;
 
 import com.RenanSCosta.todosimple.models.Task;
 import com.RenanSCosta.todosimple.services.TaskService;
+import com.RenanSCosta.todosimple.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    private UserService userService;
+
     @GetMapping("/{id}")
     public ResponseEntity<Task> findById(@PathVariable Long id) {
         Task obj = this.taskService.findById(id);
@@ -29,13 +32,14 @@ public class TaskController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Task>> findAllByUserId(@PathVariable Long userId) {
+        this.userService.findById(userId);
         List<Task> objs = this.taskService.findAllByUserId(userId);
         return ResponseEntity.ok().body(objs);
     }
 
     @PostMapping
     @Validated
-    public ResponseEntity<Void> crete(@Valid @RequestBody Task obj) {
+    public ResponseEntity<Void> create(@Valid @RequestBody Task obj) {
         this.taskService.create(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(obj.getId()).toUri();
@@ -44,7 +48,7 @@ public class TaskController {
 
     @PutMapping("/{id}")
     @Validated
-    public ResponseEntity<Void> update(@Valid @RequestBody Task obj, Long id) {
+    public ResponseEntity<Void> update(@Valid @RequestBody Task obj, @PathVariable Long id) {
         obj.setId(id);
         this.taskService.update(obj);
         return ResponseEntity.noContent().build();
