@@ -1,7 +1,6 @@
 package com.RenanSCosta.todosimple.models;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.persistence.*;
@@ -13,7 +12,10 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @EqualsAndHashCode
 @Entity
 @Table(name = "users")
@@ -40,49 +42,9 @@ public class User {
     @Size(groups = {CreateUser.class, UpdateUser.class}, min = 3, max = 255)
     private String password;
 
+
     @OneToMany(mappedBy = "user")
+    @JsonProperty(access = Access.WRITE_ONLY)
     private List<Task> tasks = new ArrayList<Task>();
 
-
-    public User(){}
-    public User(Long id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
-
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @JsonIgnore
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
 }

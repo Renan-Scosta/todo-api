@@ -5,11 +5,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -33,11 +32,4 @@ public class Task {
     @Size(min = 1, max = 255)
     private String description;
 
-
-    public Task() {}
-    public Task(Long id, User user, String description) {
-        this.id = id;
-        this.user = user;
-        this.description = description;
-    }
 }
